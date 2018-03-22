@@ -9,13 +9,26 @@
 			Roy Tang: I parsed the data into JSON format, press Option + Command + J on Chrome to view it in the console.
 		</h2>
 		<pre>
-			Structure of JSON Data:
+			Structure of JSON Data: expand to see specifics of that vote
 
 			Meeting(number)
 				Vote(number)
-					expand to see specifics of that vote
-
+					individual-votes
+						members
+							.
+							.
+					motion details
+						.
+						.
+					vote summary
+						.
+						.
 		<pre>
+
+		<h2>Stats</h2>
+		<h2>Filter</h2>
+		<select id="meetingDates" name="meetingDates"></select>
+		<select id="motions" name="motions"></select>
 		<script type="text/javascript">
 			loadData();
 		</script>

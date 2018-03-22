@@ -13,5 +13,51 @@ function loadData(){
 
 		console.log("Merge data: all votes in legco term 6 so far (up tp March 22th 2018)");
 		console.log(dataTerm6);
+
+		processData(dataTerm6);
 	}
+}
+
+function processData(data){
+	var meetingDates = [];
+	var choiceOfMotion;
+	data["legcohk-vote"]['meeting'].forEach(function(d){
+		meetingDates.push(d['_start-date']);
+	})
+	console.log(meetingDates);
+
+	d3.select("#meetingDates").selectAll("option")
+		.data(meetingDates)
+		.enter().append("option").attr("value", function(d, i){
+			//get the index of meeting
+			return i;
+		})
+		.html(function(d){return d;})
+
+	var choiceOfMeetingDate; //is the int of index of meeting
+	d3.select("#meetingDates").on("change", function(){
+		//remove motions select
+		d3.select("#motions").selectAll("option").remove();
+		choiceOfMeetingDate = d3.select(this).property('value');
+		var votes = data["legcohk-vote"]['meeting'][choiceOfMeetingDate]['vote']
+		
+		var motionNameChi = [];
+		votes.forEach(function(d){motionNameChi.push(d["motion-ch"]);})
+		d3.select("#motions").selectAll("option")
+			.data(motionNameChi).enter()
+			.append("option").attr("value", function(d, i){
+				return i; //index of vote on that meeting
+			})
+			.html(function(d){return d;});
+
+		var choiceOfMotion_index;
+		d3.select("#motions").on("change", function(){
+			choiceOfMotion_index = d3.select(this).property('value');
+			choiceOfMotion = data["legcohk-vote"]['meeting'][choiceOfMeetingDate]['vote'][choiceOfMotion_index];
+			console.log(choiceOfMotion);
+		});
+	});
+
+
+	
 }
