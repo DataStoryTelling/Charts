@@ -58,6 +58,24 @@ function processData(data){
 			choiceOfMotion_index = d3.select(this).property('value');
 			choiceOfMotion = data["legcohk-vote"]['meeting'][choiceOfMeetingDate]['vote'][choiceOfMotion_index];
 			console.log(choiceOfMotion);
+			d3.select(".motionInfo").select(".motion-ch").html("Motion Name (Chinese): " + choiceOfMotion["motion-ch"]);
+			d3.select(".motionInfo").select(".motion-en").html("Motion Name (English): " + choiceOfMotion["motion-en"]);
+			d3.select(".motionInfo").select(".vote-date").html("Date-Time of Vote: " + choiceOfMotion["vote-date"] + " - " + choiceOfMotion["vote-time"] );
+			d3.select(".motionInfo").select(".vote-result").html("Result: "+choiceOfMotion["vote-summary"]["overall"]["result"]);
+			d3.select(".motionInfo").select(".mover").html("Motion mover: " + choiceOfMotion["mover-en"] + ", " + choiceOfMotion["mover-ch"]);
+			var sepFlag = choiceOfMotion["vote-separate-mechanism"];
+			d3.select(".motionInfo").select(".voteSepMech").html("Vote Seperate Mechanism: " + sepFlag);
+			var temp1 = choiceOfMotion["vote-summary"]["geographical-constituency"];
+			var temp2 = choiceOfMotion["vote-summary"]["functional-constituency"];
+			if (sepFlag === "Yes"){
+				d3.select(".motionInfo").select(".geo-con").html("Geographical Constituency Vote: " + "Obstain: "+ temp1["abstain-count"] + "| Vote Count: " + temp1["vote-count"] + 
+															"| Yes: " + temp1["yes-count"] + "| No: " + temp1["no-count"] + "| Vote Count: " +temp1["vote-count"]+ "| Present Count: " + temp1["present-count"]);
+				d3.select(".motionInfo").select(".func-con").html("Functional Constituency Vote: " + "Obstain: "+ temp2["abstain-count"] + "| Vote Count: " + temp2["vote-count"] + 
+															"| Yes: " + temp2["yes-count"] + "| No: " + temp2["no-count"] + "| Vote Count: " +temp2["vote-count"]+ "| Present Count: " + temp2["present-count"]);
+			} else{
+				var temp = choiceOfMotion["vote-summary"]["overall"];
+				d3.select(".motionInfo").select(".all-con").html("");
+			}
 		});
 	});	
 }
@@ -139,7 +157,7 @@ function stats(data, memberList){
 		recordList.push(createRecord(d["_name-en"]));
 	});
 	console.log(recordList);
-
-	console.log(JSON.stringify(recordList));
+	//stringify json object
+	//console.log(JSON.stringify(recordList));
 
 }
